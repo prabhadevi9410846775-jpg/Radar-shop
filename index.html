@@ -1,0 +1,121 @@
+ind<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RADAR - Boss Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .boss-btn { position: fixed; bottom: 20px; right: 20px; background: black; color: white; padding: 15px 25px; border-radius: 50px; font-weight: bold; z-index: 9999; box-shadow: 0 4px 15px rgba(0,0,0,0.3); border: 2px solid #a855f7; }
+        .avatar-box { width: 100%; height: 300px; background: #f3f4f6; border: 3px dashed #a855f7; border-radius: 20px; display: flex; flex-direction: column; items-center; justify-content: center; position: relative; overflow: hidden; }
+        .scan-line { position: absolute; width: 100%; height: 2px; background: #a855f7; top: 0; animation: scan 2s linear infinite; }
+        @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
+        #adminPanel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 10000; padding: 20px; overflow-y: auto; }
+    </style>
+</head>
+<body class="bg-white text-black">
+
+    <header class="p-5 flex justify-between items-center border-b">
+        <h1 class="text-3xl font-black tracking-tighter">RADAR</h1>
+        <div class="text-2xl">🛒</div>
+    </header>
+
+    <div class="p-6 text-center">
+        <h2 class="text-5xl font-extrabold mb-4 italic">RADAR <span class="text-purple-600">AI</span></h2>
+        <p class="text-gray-500 mb-8">World's First AI Fitting Room for Indo-Western.</p>
+    </div>
+
+    <div class="px-6 mb-10 text-center">
+        <h3 class="font-bold mb-4 uppercase tracking-widest text-sm">AI Avatar Preview</h3>
+        <div class="avatar-box" id="avatarView">
+            <div class="scan-line"></div>
+            <div class="text-6xl mb-2">👤</div>
+            <p id="statusTxt" class="text-purple-600 font-mono text-sm font-bold tracking-tighter">READY TO SCAN</p>
+        </div>
+        <button onclick="startScan()" class="mt-6 bg-purple-600 text-white w-full py-4 rounded-xl font-black text-lg">
+            START AI TRY-ON
+        </button>
+    </div>
+
+    <div class="px-6 pb-24">
+        <h3 class="font-bold mb-4">LATEST DROPS</h3>
+        <div class="bg-gray-100 p-4 rounded-2xl mb-4 flex justify-between items-center">
+            <div>
+                <p class="font-bold">Oversized Radar Hoodie</p>
+                <p class="text-purple-600">₹2,499</p>
+            </div>
+            <button onclick="bookOrder('Oversized Hoodie', 2499)" class="bg-black text-white px-4 py-2 rounded-lg">Buy</button>
+        </div>
+    </div>
+
+    <button class="boss-btn" onclick="openAdmin()">💼 BOSS MODE</button>
+
+    <div id="adminPanel">
+        <div class="flex justify-between items-center border-b pb-4 mb-6">
+            <h2 class="text-2xl font-black">RADAR MERCHANT</h2>
+            <button onclick="closeAdmin()" class="bg-red-100 text-red-600 px-4 py-2 rounded-lg font-bold">CLOSE</button>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-4 mb-8">
+            <div class="bg-black text-white p-5 rounded-2xl">
+                <p class="text-xs text-gray-400">Total Sales</p>
+                <p id="totalPrice" class="text-2xl font-bold">₹0</p>
+            </div>
+            <div class="bg-black text-white p-5 rounded-2xl">
+                <p class="text-xs text-gray-400">Total Orders</p>
+                <p id="totalOrders" class="text-2xl font-bold">0</p>
+            </div>
+        </div>
+
+        <h4 class="font-bold mb-4">Active Orders:</h4>
+        <div id="orderContainer" class="space-y-3">
+            <p class="text-gray-400 italic">No orders yet...</p>
+        </div>
+    </div>
+
+    <script>
+        let sales = 0;
+        let count = 0;
+        let orders = [];
+
+        function startScan() {
+            const txt = document.getElementById('statusTxt');
+            txt.innerText = "SCANNING BODY...";
+            setTimeout(() => {
+                txt.innerText = "CREATING 3D AVATAR...";
+                setTimeout(() => {
+                    txt.innerText = "AVATAR READY (17Y Indian Male)";
+                    alert("AI Avatar Generated Successfully!");
+                }, 2000);
+            }, 1500);
+        }
+
+        function bookOrder(name, price) {
+            const id = Math.floor(Math.random() * 899) + 100;
+            orders.unshift({ id, name, price });
+            sales += price;
+            count++;
+            alert("Order Placed! Check Boss Mode.");
+            updateAdmin();
+        }
+
+        function updateAdmin() {
+            document.getElementById('totalPrice').innerText = "₹" + sales;
+            document.getElementById('totalOrders').innerText = count;
+            const container = document.getElementById('orderContainer');
+            container.innerHTML = orders.map(o => `
+                <div class="p-4 bg-gray-50 rounded-xl border border-gray-200 flex justify-between">
+                    <div>
+                        <p class="font-bold">#${o.id} - ${o.name}</p>
+                        <p class="text-xs text-gray-500">Status: Pending</p>
+                    </div>
+                    <p class="font-bold text-green-600">₹${o.price}</p>
+                </div>
+            `).join('');
+        }
+
+        function openAdmin() { document.getElementById('adminPanel').style.display = 'block'; }
+        function closeAdmin() { document.getElementById('adminPanel').style.display = 'none'; }
+    </script>
+</body>
+          </html>ex.html
